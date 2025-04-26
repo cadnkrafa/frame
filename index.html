@@ -2,10 +2,26 @@
 <html lang="th">
 <head>
   <meta charset="UTF-8" />
-  <title>เฟรมภาพโปรไฟล์</title>
+  <title>สร้างเฟรมภาพโปรไฟล์</title>
   <style>
-    body { font-family: sans-serif; text-align: center; padding: 20px; }
-    canvas { border: 1px solid #ccc; margin-top: 10px; }
+    body {
+      font-family: sans-serif;
+      text-align: center;
+      padding: 20px;
+    }
+    canvas {
+      border: 1px solid #ccc;
+      margin-top: 10px;
+    }
+    #download {
+      display: none;
+      margin-top: 10px;
+      padding: 10px 20px;
+      background-color: #2d88ff;
+      color: white;
+      text-decoration: none;
+      border-radius: 8px;
+    }
   </style>
 </head>
 <body>
@@ -14,14 +30,16 @@
   <br>
   <canvas id="canvas" width="500" height="500"></canvas>
   <br>
-  <a id="download" href="#" download="profile_with_frame.png">ดาวน์โหลดภาพ</a>
+  <a id="download" href="#" download="profile_with_frame.png">📥 ดาวน์โหลดภาพ</a>
 
   <script>
     const upload = document.getElementById('upload');
     const canvas = document.getElementById('canvas');
     const ctx = canvas.getContext('2d');
+    const downloadBtn = document.getElementById('download');
+
     const frame = new Image();
-    frame.src = 'https://img2.pic.in.th/pic/72nd-Anniversary.png'; // เปลี่ยนเป็น path ของกรอบจริง
+    frame.src = 'https://img2.pic.in.th/pic/72nd-Anniversary.png'; // กรอบ PNG โปร่งใส
 
     upload.addEventListener('change', (e) => {
       const file = e.target.files[0];
@@ -31,25 +49,28 @@
       reader.onload = function(event) {
         const img = new Image();
         img.onload = function() {
-          // ล้าง canvas แล้ววาดภาพใหม่
           ctx.clearRect(0, 0, canvas.width, canvas.height);
-          // ปรับภาพพื้นหลังให้เต็มกรอบ
           ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-          // ซ้อนภาพกรอบ
-          frame.onload = () => {
+
+          if (frame.complete) {
             ctx.drawImage(frame, 0, 0, canvas.width, canvas.height);
-          };
-          // ถ้าโหลดไว้แล้วก็วาดเลย
-          if (frame.complete) ctx.drawImage(frame, 0, 0, canvas.width, canvas.height);
+            downloadBtn.style.display = 'inline-block';
+          } else {
+            frame.onload = () => {
+              ctx.drawImage(frame, 0, 0, canvas.width, canvas.height);
+              downloadBtn.style.display = 'inline-block';
+            };
+          }
         };
         img.src = event.target.result;
       };
       reader.readAsDataURL(file);
     });
 
-    // ปุ่มดาวน์โหลด
-    document.getElementById('download').addEventListener('click', function () {
-      this.href = canvas.toDataURL('image/png');
+    downloadBtn.addEventListener('click', function (e) {
+      e.preventDefault();
+      const dataURL = canvas.toDataURL('image/png');
+      downloadBtn.href = dataURL;
     });
   </script>
 </body>
