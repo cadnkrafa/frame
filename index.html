@@ -2,7 +2,7 @@
 <html lang="th">
 <head>
   <meta charset="UTF-8">
-  <title>เฟรมโปรไฟล์ 72 ปี รร.นายเรืออากาศ</title>
+  <title>สร้างภาพโปรไฟล์ 72 ปี รร.นายเรืออากาศ</title>
   <style>
     body {
       font-family: 'Arial', sans-serif;
@@ -14,35 +14,30 @@
     }
 
     h1 {
-      font-size: 1.8em;
-      margin-bottom: 30px;
-      line-height: 1.4;
-    }
-
-    .logo {
-      width: 180px;
+      font-size: 2.2em;
       margin-bottom: 20px;
-    }
-
-    input[type="file"] {
-      display: none;
     }
 
     .custom-file-btn {
       display: inline-block;
       font-size: 1em;
       padding: 10px 25px;
-      background-color: #fff;
-      color: #00aaff;
+      background-color: #fffb83;
+      color: #333;
       border: none;
       border-radius: 8px;
       cursor: pointer;
-      transition: background-color 0.3s ease;
+      transition: background-color 0.3s ease, color 0.3s ease;
+      margin-bottom: 10px;
     }
 
     .custom-file-btn:hover {
-      background-color: #00aaff;
-      color: white;
+      background-color: #f5f06d;
+      color: #000;
+    }
+
+    input[type="file"] {
+      display: none;
     }
 
     .preview-container {
@@ -59,6 +54,7 @@
       max-height: 300px;
       border-radius: 8px;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      background-color: white;
     }
 
     #canvas {
@@ -83,11 +79,16 @@
     #download:hover {
       background-color: #008ecc;
     }
+
+    .logo {
+      width: 160px;
+      margin-bottom: 20px;
+    }
   </style>
 </head>
 <body>
   <img src="https://img2.pic.in.th/pic/Asset-1e11ec556e7178767.png" class="logo" alt="logo">
-  <h1><span style="font-size: 1.5em;">🎉</span> เฟรมโปรไฟล์ฉลองครบรอบ 72 ปี<br>โรงเรียนนายเรืออากาศนวมินทกษัตริยาธิราช</h1>
+  <h1>สร้างภาพโปรไฟล์<br>ฉลอง 72 ปี รร.นายเรืออากาศ</h1>
 
   <input type="file" id="upload" accept="image/*" />
   <label for="upload" class="custom-file-btn">📷 เลือกภาพโปรไฟล์</label>
@@ -108,7 +109,7 @@
 
     const frame = new Image();
     frame.crossOrigin = 'anonymous';
-    frame.src = '72frame.png'; // URL กรอบภาพ
+    frame.src = '72frame.png';
 
     upload.addEventListener('change', (e) => {
       const file = e.target.files[0];
