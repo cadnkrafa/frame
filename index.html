@@ -12,6 +12,7 @@
     canvas {
       border: 1px solid #ccc;
       margin-top: 10px;
+      display: none;
     }
     #download {
       display: none;
@@ -30,7 +31,7 @@
   <br>
   <canvas id="canvas" width="500" height="500"></canvas>
   <br>
-  <a id="download" href="#" download="profile_with_frame.png">📥 ดาวน์โหลดภาพ</a>
+  <a id="download">📥 ดาวน์โหลดภาพ</a>
 
   <script>
     const upload = document.getElementById('upload');
@@ -39,7 +40,7 @@
     const downloadBtn = document.getElementById('download');
 
     const frame = new Image();
-    frame.src = 'https://img2.pic.in.th/pic/72nd-Anniversary.png'; // กรอบ PNG โปร่งใส
+    frame.src = 'https://img2.pic.in.th/pic/72nd-Anniversary.png'; // ตรวจให้แน่ใจว่าอยู่ในโฟลเดอร์เดียวกับ HTML
 
     upload.addEventListener('change', (e) => {
       const file = e.target.files[0];
@@ -52,25 +53,31 @@
           ctx.clearRect(0, 0, canvas.width, canvas.height);
           ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
 
+          frame.onload = () => {
+            ctx.drawImage(frame, 0, 0, canvas.width, canvas.height);
+            canvas.style.display = 'block';
+            canvas.toBlob((blob) => {
+              const url = URL.createObjectURL(blob);
+              downloadBtn.href = url;
+              downloadBtn.download = 'profile_with_frame.png';
+              downloadBtn.style.display = 'inline-block';
+            }, 'image/png');
+          };
+
           if (frame.complete) {
             ctx.drawImage(frame, 0, 0, canvas.width, canvas.height);
-            downloadBtn.style.display = 'inline-block';
-          } else {
-            frame.onload = () => {
-              ctx.drawImage(frame, 0, 0, canvas.width, canvas.height);
+            canvas.style.display = 'block';
+            canvas.toBlob((blob) => {
+              const url = URL.createObjectURL(blob);
+              downloadBtn.href = url;
+              downloadBtn.download = 'profile_with_frame.png';
               downloadBtn.style.display = 'inline-block';
-            };
+            }, 'image/png');
           }
         };
         img.src = event.target.result;
       };
       reader.readAsDataURL(file);
-    });
-
-    downloadBtn.addEventListener('click', function (e) {
-      e.preventDefault();
-      const dataURL = canvas.toDataURL('image/png');
-      downloadBtn.href = dataURL;
     });
   </script>
 </body>
