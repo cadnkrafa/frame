@@ -41,7 +41,7 @@
 
     const frame = new Image();
     frame.crossOrigin = 'anonymous'; // สำคัญมาก! เพื่อให้โหลดจาก URL ภายนอกได้
-    frame.src = '72nd-Anniversary.png';
+    frame.src = '72nd-Anniversary.png'; // เปลี่ยนเป็น URL ของกรอบ
 
     upload.addEventListener('change', (e) => {
       const file = e.target.files[0];
@@ -50,23 +50,34 @@
       const reader = new FileReader();
       reader.onload = function(event) {
         const img = new Image();
-        img.onload = function () {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
+        img.onload = function() {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  const ratio = Math.max(canvas.width / img.width, canvas.height / img.height);
-  const newWidth = img.width * ratio;
-  const newHeight = img.height * ratio;
-  const offsetX = (canvas.width - newWidth) / 2;
-  const offsetY = (canvas.height - newHeight) / 2;
+          // วาดภาพให้เต็ม canvas โดยครอบตัดตรงกลาง (Center crop)
+          const ratio = Math.max(canvas.width / img.width, canvas.height / img.height);
+          const newWidth = img.width * ratio;
+          const newHeight = img.height * ratio;
+          const offsetX = (canvas.width - newWidth) / 2;
+          const offsetY = (canvas.height - newHeight) / 2;
+          ctx.drawImage(img, offsetX, offsetY, newWidth, newHeight);
 
-  ctx.drawImage(img, offsetX, offsetY, newWidth, newHeight);
-  
-  if (frame.complete) {
-    drawFrameAndEnableDownload();
-  } else {
-    frame.onload = drawFrameAndEnableDownload;
-  }
-};
+          function drawFrameAndEnableDownload() {
+            ctx.drawImage(frame, 0, 0, canvas.width, canvas.height);
+            canvas.style.display = 'block';
+            canvas.toBlob((blob) => {
+              const url = URL.createObjectURL(blob);
+              downloadBtn.href = url;
+              downloadBtn.download = 'profile_with_frame.png';
+              downloadBtn.style.display = 'inline-block';
+            }, 'image/png');
+          }
+
+          if (frame.complete) {
+            drawFrameAndEnableDownload();
+          } else {
+            frame.onload = drawFrameAndEnableDownload;
+          }
+        };
         img.src = event.target.result;
       };
       reader.readAsDataURL(file);
@@ -74,4 +85,3 @@
   </script>
 </body>
 </html>
-
