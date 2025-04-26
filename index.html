@@ -14,6 +14,12 @@
       margin-top: 10px;
       display: none;
     }
+    #preview {
+      max-width: 100%;
+      max-height: 300px;
+      display: block;
+      margin: 20px auto;
+    }
     #download {
       display: none;
       margin-top: 10px;
@@ -29,6 +35,8 @@
   <h1>เฟรมโปรไฟล์ฉลอง 72 ปี รร.นายเรืออากาศ</h1>
   <input type="file" id="upload" accept="image/*" />
   <br>
+  <img id="preview" style="display:none;" />
+  <br>
   <canvas id="canvas" width="500" height="500"></canvas>
   <br>
   <a id="download">📥 ดาวน์โหลดภาพ</a>
@@ -38,6 +46,7 @@
     const canvas = document.getElementById('canvas');
     const ctx = canvas.getContext('2d');
     const downloadBtn = document.getElementById('download');
+    const previewImg = document.getElementById('preview');
 
     const frame = new Image();
     frame.crossOrigin = 'anonymous'; // สำคัญมาก! เพื่อให้โหลดจาก URL ภายนอกได้
@@ -51,9 +60,13 @@
       reader.onload = function(event) {
         const img = new Image();
         img.onload = function() {
+          // แสดงภาพตัวอย่างก่อนการวาดกรอบ
+          previewImg.style.display = 'block';
+          previewImg.src = event.target.result;
+
           ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-          // วาดภาพให้เต็ม canvas โดยครอบตัดตรงกลาง (Center crop)
+          // คำนวณให้ภาพอยู่ตรงกลาง canvas
           const ratio = Math.max(canvas.width / img.width, canvas.height / img.height);
           const newWidth = img.width * ratio;
           const newHeight = img.height * ratio;
@@ -61,6 +74,7 @@
           const offsetY = (canvas.height - newHeight) / 2;
           ctx.drawImage(img, offsetX, offsetY, newWidth, newHeight);
 
+          // วาดกรอบที่ด้านบนของภาพ
           function drawFrameAndEnableDownload() {
             ctx.drawImage(frame, 0, 0, canvas.width, canvas.height);
             canvas.style.display = 'block';
