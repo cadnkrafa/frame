@@ -2,7 +2,7 @@
 <html lang="th">
 <head>
   <meta charset="UTF-8">
-  <title>สร้างภาพโปรไฟล์ 72 ปี รร.นายเรืออากาศ</title>
+  <title>เฟรมโปรไฟล์ 72 ปี รร.นายเรืออากาศ</title>
   <style>
     body {
       font-family: 'Arial', sans-serif;
@@ -14,13 +14,24 @@
     }
 
     h1 {
-      font-size: 2.2em;
+      font-size: 1.8em;
+      margin-bottom: 30px;
+      line-height: 1.4;
+    }
+
+    .logo {
+      width: 180px;
       margin-bottom: 20px;
     }
 
     input[type="file"] {
+      display: none;
+    }
+
+    .custom-file-btn {
+      display: inline-block;
       font-size: 1em;
-      padding: 10px 20px;
+      padding: 10px 25px;
       background-color: #fff;
       color: #00aaff;
       border: none;
@@ -29,7 +40,7 @@
       transition: background-color 0.3s ease;
     }
 
-    input[type="file"]:hover {
+    .custom-file-btn:hover {
       background-color: #00aaff;
       color: white;
     }
@@ -72,17 +83,14 @@
     #download:hover {
       background-color: #008ecc;
     }
-
-    .logo {
-      width: 200px;
-      margin-bottom: 20px;
-    }
   </style>
 </head>
 <body>
   <img src="https://img2.pic.in.th/pic/Asset-1e11ec556e7178767.png" class="logo" alt="logo">
-  <h1>สร้างภาพโปรไฟล์ 72 ปี รร.นายเรืออากาศ</h1>
+  <h1><span style="font-size: 1.5em;">🎉</span> เฟรมโปรไฟล์ฉลองครบรอบ 72 ปี<br>โรงเรียนนายเรืออากาศนวมินทกษัตริยาธิราช</h1>
+
   <input type="file" id="upload" accept="image/*" />
+  <label for="upload" class="custom-file-btn">📷 เลือกภาพโปรไฟล์</label>
 
   <div class="preview-container">
     <img id="preview" style="display:none;" />
@@ -100,7 +108,7 @@
 
     const frame = new Image();
     frame.crossOrigin = 'anonymous';
-    frame.src = '72frame.png'; // ใช้ชื่อไฟล์โลคัล หรือเปลี่ยนเป็น URL ก็ได้
+    frame.src = 'https://img2.pic.in.th/pic/72nd-Anniversary.png'; // URL กรอบภาพ
 
     upload.addEventListener('change', (e) => {
       const file = e.target.files[0];
