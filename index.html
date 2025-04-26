@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-  <meta charset="UTF-8" />
-  <title>สร้างเฟรมภาพโปรไฟล์</title>
+  <meta charset="UTF-8">
+  <title>เฟรมโปรไฟล์ Facebook - 72 ปี รร.นายเรืออากาศ</title>
   <style>
     body {
       font-family: sans-serif;
@@ -26,7 +26,7 @@
   </style>
 </head>
 <body>
-  <h1>สร้างเฟรมภาพโปรไฟล์</h1>
+  <h1>เฟรมโปรไฟล์ฉลอง 72 ปี รร.นายเรืออากาศ</h1>
   <input type="file" id="upload" accept="image/*" />
   <br>
   <canvas id="canvas" width="500" height="500"></canvas>
@@ -40,7 +40,8 @@
     const downloadBtn = document.getElementById('download');
 
     const frame = new Image();
-    frame.src = 'https://img2.pic.in.th/pic/72nd-Anniversary.png'; // ตรวจให้แน่ใจว่าอยู่ในโฟลเดอร์เดียวกับ HTML
+    frame.crossOrigin = 'anonymous'; // สำคัญมาก! เพื่อให้โหลดจาก URL ภายนอกได้
+    frame.src = 'https://img2.pic.in.th/pic/72nd-Anniversary.png';
 
     upload.addEventListener('change', (e) => {
       const file = e.target.files[0];
@@ -51,20 +52,16 @@
         const img = new Image();
         img.onload = function() {
           ctx.clearRect(0, 0, canvas.width, canvas.height);
-          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
 
-          frame.onload = () => {
-            ctx.drawImage(frame, 0, 0, canvas.width, canvas.height);
-            canvas.style.display = 'block';
-            canvas.toBlob((blob) => {
-              const url = URL.createObjectURL(blob);
-              downloadBtn.href = url;
-              downloadBtn.download = 'profile_with_frame.png';
-              downloadBtn.style.display = 'inline-block';
-            }, 'image/png');
-          };
+          // วาดภาพตรงกลาง (center crop)
+          const ratio = Math.max(canvas.width / img.width, canvas.height / img.height);
+          const newWidth = img.width * ratio;
+          const newHeight = img.height * ratio;
+          const offsetX = (canvas.width - newWidth) / 2;
+          const offsetY = (canvas.height - newHeight) / 2;
+          ctx.drawImage(img, offsetX, offsetY, newWidth, newHeight);
 
-          if (frame.complete) {
+          function drawFrameAndEnableDownload() {
             ctx.drawImage(frame, 0, 0, canvas.width, canvas.height);
             canvas.style.display = 'block';
             canvas.toBlob((blob) => {
@@ -74,6 +71,12 @@
               downloadBtn.style.display = 'inline-block';
             }, 'image/png');
           }
+
+          if (frame.complete) {
+            drawFrameAndEnableDownload();
+          } else {
+            frame.onload = drawFrameAndEnableDownload;
+          }
         };
         img.src = event.target.result;
       };
@@ -82,3 +85,4 @@
   </script>
 </body>
 </html>
+
