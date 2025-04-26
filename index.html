@@ -6,21 +6,18 @@
   <style>
     body {
       font-family: 'Arial', sans-serif;
-      background-color: #00d8ff; /* สีพื้นหลัง */
+      background-color: #00d8ff;
       color: white;
       text-align: center;
       padding: 40px;
       margin: 0;
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
     }
+
     h1 {
       font-size: 2.5em;
       margin-bottom: 20px;
     }
+
     input[type="file"] {
       font-size: 1em;
       padding: 10px 20px;
@@ -31,22 +28,33 @@
       cursor: pointer;
       transition: background-color 0.3s ease;
     }
+
     input[type="file"]:hover {
       background-color: #00b0cc;
+      color: #fff;
     }
-    canvas {
-      border: 3px solid #fff;
-      margin-top: 20px;
-      display: none;
+
+    .preview-container {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 40px;
+      margin-top: 30px;
+      flex-wrap: wrap;
     }
-    #preview {
-      max-width: 80%;
+
+    #preview, #canvas {
+      max-width: 300px;
       max-height: 300px;
-      display: block;
-      margin: 20px auto;
       border-radius: 8px;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
     }
+
+    #canvas {
+      display: none;
+      border: 3px solid #fff;
+    }
+
     #download {
       display: none;
       margin-top: 20px;
@@ -60,6 +68,7 @@
       cursor: pointer;
       transition: background-color 0.3s ease;
     }
+
     #download:hover {
       background-color: #00b0cc;
     }
@@ -68,11 +77,12 @@
 <body>
   <h1>เฟรมโปรไฟล์ฉลอง 72 ปี รร.นายเรืออากาศ</h1>
   <input type="file" id="upload" accept="image/*" />
-  <br>
-  <img id="preview" style="display:none;" />
-  <br>
-  <canvas id="canvas" width="500" height="500"></canvas>
-  <br>
+
+  <div class="preview-container">
+    <img id="preview" style="display:none;" />
+    <canvas id="canvas" width="500" height="500"></canvas>
+  </div>
+
   <a id="download">📥 ดาวน์โหลดภาพ</a>
 
   <script>
@@ -83,8 +93,8 @@
     const previewImg = document.getElementById('preview');
 
     const frame = new Image();
-    frame.crossOrigin = 'anonymous'; // สำคัญมาก! เพื่อให้โหลดจาก URL ภายนอกได้
-    frame.src = '72frame.png'; // เปลี่ยนเป็น URL ของกรอบ
+    frame.crossOrigin = 'anonymous';
+    frame.src = 'frame0.png';
 
     upload.addEventListener('change', (e) => {
       const file = e.target.files[0];
@@ -94,13 +104,12 @@
       reader.onload = function(event) {
         const img = new Image();
         img.onload = function() {
-          // แสดงภาพตัวอย่างก่อนการวาดกรอบ
           previewImg.style.display = 'block';
           previewImg.src = event.target.result;
 
           ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-          // คำนวณให้ภาพอยู่ตรงกลาง canvas
+          // คำนวณขนาดภาพให้พอดี
           const ratio = Math.max(canvas.width / img.width, canvas.height / img.height);
           const newWidth = img.width * ratio;
           const newHeight = img.height * ratio;
@@ -108,7 +117,7 @@
           const offsetY = (canvas.height - newHeight) / 2;
           ctx.drawImage(img, offsetX, offsetY, newWidth, newHeight);
 
-          // วาดกรอบที่ด้านบนของภาพ
+          // วาดกรอบซ้อนบนภาพ
           function drawFrameAndEnableDownload() {
             ctx.drawImage(frame, 0, 0, canvas.width, canvas.height);
             canvas.style.display = 'block';
@@ -133,4 +142,3 @@
   </script>
 </body>
 </html>
-
