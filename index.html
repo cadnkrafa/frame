@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <title>เฟรมภาพโปรไฟล์</title>
+  <style>
+    body { font-family: sans-serif; text-align: center; padding: 20px; }
+    canvas { border: 1px solid #ccc; margin-top: 10px; }
+  </style>
+</head>
+<body>
+  <h1>สร้างเฟรมภาพโปรไฟล์</h1>
+  <input type="file" id="upload" accept="image/*" />
+  <br>
+  <canvas id="canvas" width="500" height="500"></canvas>
+  <br>
+  <a id="download" href="#" download="profile_with_frame.png">ดาวน์โหลดภาพ</a>
+
+  <script>
+    const upload = document.getElementById('upload');
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    const frame = new Image();
+    frame.src = 'frame.png'; // เปลี่ยนเป็น path ของกรอบจริง
+
+    upload.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(event) {
+        const img = new Image();
+        img.onload = function() {
+          // ล้าง canvas แล้ววาดภาพใหม่
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          // ปรับภาพพื้นหลังให้เต็มกรอบ
+          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+          // ซ้อนภาพกรอบ
+          frame.onload = () => {
+            ctx.drawImage(frame, 0, 0, canvas.width, canvas.height);
+          };
+          // ถ้าโหลดไว้แล้วก็วาดเลย
+          if (frame.complete) ctx.drawImage(frame, 0, 0, canvas.width, canvas.height);
+        };
+        img.src = event.target.result;
+      };
+      reader.readAsDataURL(file);
+    });
+
+    // ปุ่มดาวน์โหลด
+    document.getElementById('download').addEventListener('click', function () {
+      this.href = canvas.toDataURL('image/png');
+    });
+  </script>
+</body>
+</html>
