@@ -6,15 +6,15 @@
   <style>
     body {
       font-family: 'Arial', sans-serif;
-      background-color: #00d8ff;
+      background-color: #83d9ff;
       color: white;
       text-align: center;
-      padding: 40px;
+      padding: 40px 20px;
       margin: 0;
     }
 
     h1 {
-      font-size: 2.5em;
+      font-size: 2.2em;
       margin-bottom: 20px;
     }
 
@@ -22,7 +22,7 @@
       font-size: 1em;
       padding: 10px 20px;
       background-color: #fff;
-      color: #00d8ff;
+      color: #00aaff;
       border: none;
       border-radius: 8px;
       cursor: pointer;
@@ -30,8 +30,8 @@
     }
 
     input[type="file"]:hover {
-      background-color: #00b0cc;
-      color: #fff;
+      background-color: #00aaff;
+      color: white;
     }
 
     .preview-container {
@@ -59,7 +59,7 @@
       display: none;
       margin-top: 20px;
       padding: 15px 30px;
-      background-color: #00d8ff;
+      background-color: #00aaff;
       color: white;
       font-size: 1.2em;
       text-decoration: none;
@@ -70,12 +70,17 @@
     }
 
     #download:hover {
-      background-color: #00b0cc;
+      background-color: #008ecc;
+    }
+
+    .logo {
+      width: 100px;
+      margin-bottom: 20px;
     }
   </style>
 </head>
 <body>
-  <img src="https://img2.pic.in.th/pic/Asset-1e11ec556e7178767.png">
+  <img src="https://img2.pic.in.th/pic/Asset-1e11ec556e7178767.png" class="logo" alt="logo">
   <h1>เฟรมโปรไฟล์ฉลอง 72 ปี รร.นายเรืออากาศ</h1>
   <input type="file" id="upload" accept="image/*" />
 
@@ -95,7 +100,7 @@
 
     const frame = new Image();
     frame.crossOrigin = 'anonymous';
-    frame.src = '72frame.png';
+    frame.src = '72frame.png'; // ใช้ชื่อไฟล์โลคัล หรือเปลี่ยนเป็น URL ก็ได้
 
     upload.addEventListener('change', (e) => {
       const file = e.target.files[0];
@@ -110,7 +115,6 @@
 
           ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-          // คำนวณขนาดภาพให้พอดี
           const ratio = Math.max(canvas.width / img.width, canvas.height / img.height);
           const newWidth = img.width * ratio;
           const newHeight = img.height * ratio;
@@ -118,7 +122,6 @@
           const offsetY = (canvas.height - newHeight) / 2;
           ctx.drawImage(img, offsetX, offsetY, newWidth, newHeight);
 
-          // วาดกรอบซ้อนบนภาพ
           function drawFrameAndEnableDownload() {
             ctx.drawImage(frame, 0, 0, canvas.width, canvas.height);
             canvas.style.display = 'block';
