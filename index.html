@@ -2,6 +2,7 @@
 <html lang="th">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>สร้างภาพโปรไฟล์ 72 ปี โรงเรียนนายเรืออากาศนวมินทกษัตริยาธิราช</title>
   <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;700&display=swap" rel="stylesheet">
   <style>
@@ -57,8 +58,9 @@
     }
 
     #preview, #canvas {
+      width: 100%;
       max-width: 300px;
-      max-height: 300px;
+      height: auto;
       border-radius: 8px;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
       background-color: white;
@@ -75,7 +77,7 @@
       padding: 15px 30px;
       background-color: #00aaff;
       color: white;
-      font-size: 1em; /* ใช้ขนาดเดียวกับปุ่มเลือกภาพ */
+      font-size: 1em;
       text-decoration: none;
       border-radius: 8px;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
@@ -102,7 +104,7 @@
 
   <div class="preview-container">
     <img id="preview" style="display:none;" />
-    <canvas id="canvas" width="500" height="500"></canvas>
+    <canvas id="canvas"></canvas>
   </div>
 
   <a id="download">📥 ดาวน์โหลดภาพ</a>
@@ -116,9 +118,22 @@
 
     const frame = new Image();
     frame.crossOrigin = 'anonymous';
-    frame.src = '72frame.png';
+    frame.src = '72frame.png'; // เปลี่ยนเป็น URL ของกรอบจริงถ้าต้องการ
+
+    function resizeCanvas() {
+      const maxWidth = 300;
+      const padding = 40;
+      const deviceWidth = window.innerWidth - padding;
+      const size = Math.min(deviceWidth, maxWidth);
+      canvas.width = size;
+      canvas.height = size;
+    }
+
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
 
     upload.addEventListener('change', (e) => {
+      resizeCanvas();
       const file = e.target.files[0];
       if (!file) return;
 
