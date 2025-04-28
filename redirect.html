@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>เปิดในเบราว์เซอร์</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      text-align: center;
+      padding: 50px;
+    }
+    button {
+      padding: 15px 30px;
+      font-size: 18px;
+      background-color: #28a745;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #218838;
+    }
+  </style>
+</head>
+<body>
+  <h1>เปิดในเบราว์เซอร์จริง</h1>
+  <p>กดปุ่มด้านล่างเพื่อเปิดใน Google Chrome, Safari หรือเบราว์เซอร์ของคุณ</p>
+  <button onclick="openInBrowser()">เปิดในเบราว์เซอร์</button>
+
+  <script>
+    function openInBrowser() {
+      const url = "http://72nkrafa.rtaf.work"; // <-- เปลี่ยนเป็น URL ปลายทางของคุณ
+      const newWindow = window.open(url, '_blank');
+
+      if (!newWindow || newWindow.closed || typeof newWindow.closed == 'undefined') {
+        // ถ้า window.open โดนบล็อก เช่น บาง Facebook App
+        alert('กรุณากดเปิดในเบราว์เซอร์ที่มุมขวาบน');
+      }
+    }
+  </script>
+</body>
+</html>
