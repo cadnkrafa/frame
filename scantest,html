@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>QR Code Scanner to Google Sheet</title>
+  <script src="https://unpkg.com/html5-qrcode"></script>
+</head>
+<body>
+  <h1>Scan QR Code</h1>
+  <div id="reader" style="width:300px;"></div>
+  <p id="result"></p>
+
+  <script>
+    const sheetURL = "YOUR_GOOGLE_APPS_SCRIPT_WEBAPP_URL"; // ใส่ URL ที่ได้จาก Apps Script
+
+    function postData(qrText) {
+      fetch(sheetURL, {
+        method: "POST",
+        contentType: "application/json",
+        body: JSON.stringify({ qrdata: qrText })
+      }).then(res => res.text()).then(alert);
+    }
+
+    function onScanSuccess(decodedText, decodedResult) {
+      document.getElementById('result').innerText = `Scanned: ${decodedText}`;
+      postData(decodedText);
+    }
+
+    const html5QrcodeScanner = new Html5QrcodeScanner(
+      "reader", { fps: 10, qrbox: 250 });
+    html5QrcodeScanner.render(onScanSuccess);
+  </script>
+</body>
+</html>
