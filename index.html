@@ -2,42 +2,71 @@
 <html lang="th">
 <head>
   <meta charset="UTF-8">
-  <title>เปิดในเบราว์เซอร์</title>
+  <title>กำลังเปิดลิงก์...</title>
   <style>
     body {
-      font-family: sans-serif;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       text-align: center;
-      padding: 50px;
+      padding: 40px;
+      background: #f7f7f7;
+    }
+    .container {
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      display: inline-block;
     }
     button {
+      background-color: #007bff;
+      color: white;
       padding: 15px 30px;
       font-size: 18px;
-      background-color: #28a745;
-      color: white;
       border: none;
       border-radius: 8px;
       cursor: pointer;
+      margin-top: 20px;
     }
     button:hover {
-      background-color: #218838;
+      background-color: #0056b3;
+    }
+    .note {
+      margin-top: 30px;
+      font-size: 16px;
+      color: #555;
+    }
+    .highlight {
+      font-weight: bold;
+      color: #d63384;
     }
   </style>
 </head>
 <body>
-  <h1>เปิดในเบราว์เซอร์จริง</h1>
-  <p>กดปุ่มด้านล่างเพื่อเปิดใน Google Chrome, Safari หรือเบราว์เซอร์ของคุณ</p>
-  <button onclick="openInBrowser()">เปิดในเบราว์เซอร์</button>
+  <div class="container">
+    <h1>กำลังเปิดลิงก์...</h1>
+    <p>หากระบบไม่พาไปอัตโนมัติ</p>
+    <button onclick="openInBrowser()">เปิดลิงก์ด้วยตัวเอง</button>
+
+    <div class="note">
+      หากยังไม่เปิด กรุณากด <span class="highlight">สามจุด (···)</span> ด้านขวาบน <br>
+      แล้วเลือก <span class="highlight">"เปิดในเบราว์เซอร์"</span> เพื่อไปต่อ
+    </div>
+  </div>
 
   <script>
     function openInBrowser() {
-      const url = "http://72nkrafa.rtaf.work/frame.html"; // <-- เปลี่ยนเป็น URL ปลายทางของคุณ
-      const newWindow = window.open(url, '_blank');
+      const targetUrl = "http://72nkrafa.rtaf.work/frame.html"; // <--- เปลี่ยน URL เป็นของคุณตรงนี้
+      const newWindow = window.open(targetUrl, '_blank');
 
       if (!newWindow || newWindow.closed || typeof newWindow.closed == 'undefined') {
-        // ถ้า window.open โดนบล็อก เช่น บาง Facebook App
-        alert('กรุณากดเปิดในเบราว์เซอร์ที่มุมขวาบน');
+        alert('กรุณากดสามจุดด้านบน แล้วเลือก "เปิดในเบราว์เซอร์"');
       }
     }
+
+    // ลองเปิดอัตโนมัติทันทีด้วย
+    window.onload = function() {
+      openInBrowser();
+    };
   </script>
 </body>
 </html>
